@@ -24,12 +24,17 @@ function App () {
 
     useEffect(() => {
         fetch(url)
-        .then((res) => res.json())
+        .then((res) => {
+            if (res.ok) {
+                return res.json()
+            }
+            return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then((res) => {
             setIngregients(res.data)
             setDataFetched(true)
         })
-        .catch((err) => console.log("Server error"));
+        .catch(console.error);
     }, [ingredients])
     
 
