@@ -5,7 +5,7 @@ import styles from './ingredient-details.module.css';
 function IngredientDetails({ingredient}) {
     return(
         <div className={styles.details}>
-            <img src={ingredient.image} className={styles.image} alt='ингредиент'/>
+            <img src={ingredient.image} className={styles.image} alt={ingredient.name}/>
             <h1 className={styles.text_name + ' text text_type_main-medium'}>
                 {ingredient.name}
             </h1>

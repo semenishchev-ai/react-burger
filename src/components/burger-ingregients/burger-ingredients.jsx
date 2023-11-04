@@ -16,7 +16,7 @@ function BurgerIngredients({ingredients, onModalOpen}) {
             <p className="text text_type_main-large pt-10 pb-5">
                 Соберите бургер
             </p>
-            <div style={{ display: 'flex' }}>
+            <div className={styles.tabs}>
                 <Tab value="one" active={current === 'one'} onClick={setCurrent}>
                     Булки
                 </Tab>

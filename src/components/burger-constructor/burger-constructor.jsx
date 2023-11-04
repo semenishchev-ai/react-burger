@@ -25,6 +25,9 @@ function BurgerConstructor({ingredients, onModalOpen}) {
                 </div>
                 <ul className={styles.scrollbar}>
                     {ingredients.map((elem) => {
+                        if (elem.type === "bun") {
+                            return null;
+                        }
                         sum += parseInt(elem.price);
                         return (
                             <li className={styles.middle_item} key={elem._id}>

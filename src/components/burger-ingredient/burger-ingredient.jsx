@@ -11,7 +11,7 @@ const BurgerIngredient = ({ingredient, onModalOpen}) => {
 
     return (
         <div className={styles.ingredient} onClick={onCLick}>
-            <img className={styles.image} src={ingredient.image} alt="ингредиент"/>
+            <img className={styles.image} src={ingredient.image} alt={ingredient.name}/>
             <div className={styles.price}>
                 <p className="text text_type_digits-default pr-2">
                     {ingredient.price}

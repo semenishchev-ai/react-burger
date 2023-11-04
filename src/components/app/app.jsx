@@ -2,25 +2,14 @@ import React, { useEffect } from "react";
 import AppHeader from "../app-header/app-header";
 import MainSection from "../main-section/main-section";
 import Modal from "../modal/modal";
+import { useModal } from "../../hooks/useModal";
 
 const url = "https://norma.nomoreparties.space/api/ingredients";
 
 function App () {
     const [ingredients, setIngregients] = React.useState([])
     const [dataFetched, setDataFetched] = React.useState(false)
-    const [modalOpened, setModalOpened] = React.useState(false)
-    const [modalChild, setModalChild] = React.useState(<></>);
-    const [modalHeader, setModalHeader] = React.useState('');
-
-    const onModalOpen = (header, content) => {
-        setModalOpened(true)
-        setModalChild(content)
-        setModalHeader(header)
-    }
-
-    const onModalClose = () => {
-        setModalOpened(false)
-    }
+    const { isModalOpen, openModal, closeModal, modalChild, modalHeader } = useModal();
 
     useEffect(() => {
         fetch(url)
@@ -35,16 +24,16 @@ function App () {
             setDataFetched(true)
         })
         .catch(console.error);
-    }, [ingredients])
+    }, [])
     
 
     return (
         <>
             <AppHeader />
-            {dataFetched && <MainSection ingredients={ingredients} onModalOpen={onModalOpen}/>}
-            {dataFetched && modalOpened && <Modal header={modalHeader} onClose={onModalClose}>
+            {dataFetched && (<MainSection ingredients={ingredients} onModalOpen={openModal}/>)}
+            {dataFetched && isModalOpen && (<Modal header={modalHeader} onClose={closeModal}>
                 {modalChild}
-                </Modal>}
+                </Modal>)}
         </>
     )
 }
