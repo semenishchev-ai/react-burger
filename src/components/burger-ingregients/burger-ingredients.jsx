@@ -3,13 +3,41 @@ import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
+import { useSelector } from "react-redux";
 
-function BurgerIngredients({ingredients, onModalOpen}) {
+function BurgerIngredients({onModalOpen}) {
     const [current, setCurrent] = React.useState('one')
 
+    const ingredients = useSelector(store => store.mainReducer.fetchedIngredients);
     const bunArray = ingredients.filter((item) => item.type === 'bun');
     const mainArray = ingredients.filter((item) => item.type === 'main');
     const sauceArray = ingredients.filter((item) => item.type === 'sauce');
+
+    const scrollWindow = document.getElementById('scroll_window');
+    const buns = document.getElementById('one');
+    const sauces = document.getElementById('two');
+    const main = document.getElementById('three');
+
+    const onScrollListener = (event) => {
+        const distBuns = Math.abs(scrollWindow.getBoundingClientRect().top - buns.getBoundingClientRect().top);
+        const distSauces = Math.abs(scrollWindow.getBoundingClientRect().top - sauces.getBoundingClientRect().top);
+        const distMain = Math.abs(scrollWindow.getBoundingClientRect().top - main.getBoundingClientRect().top);
+
+        const minDist = Math.min(distBuns, distSauces, distMain);
+        switch (minDist) {
+            case distBuns:
+                setCurrent("one");
+                return;
+            case distSauces:
+                setCurrent("two");
+                return;
+            case distMain:
+                setCurrent("three");
+                return;
+            default:
+                return;
+        }
+    }
 
     return (
         <section className={styles.section}>
@@ -27,8 +55,8 @@ function BurgerIngredients({ingredients, onModalOpen}) {
                     Начинки
                 </Tab>
             </div>
-            <div className={styles.scrollbar}>
-                <p className="text text_type_main-medium pt-10 pb-6">
+            <div className={styles.scrollbar} onScroll={onScrollListener} id="scroll_window">
+                <p className="text text_type_main-medium pt-10 pb-6" id="one">
                     Булки
                 </p>
                 <div className={styles.choose_block}>
@@ -38,7 +66,7 @@ function BurgerIngredients({ingredients, onModalOpen}) {
                         )
                     })}
                 </div>
-                <p className="text text_type_main-medium pt-10 pb-6">
+                <p className="text text_type_main-medium pt-10 pb-6" id="two">
                     Соусы
                 </p>
                 <div className={styles.choose_block}>
@@ -49,7 +77,7 @@ function BurgerIngredients({ingredients, onModalOpen}) {
                     })}
                     
                 </div>
-                <p className="text text_type_main-medium pt-10 pb-6">
+                <p className="text text_type_main-medium pt-10 pb-6" id="three">
                     Начинки
                 </p>
                 <div className={styles.choose_block}>
@@ -65,7 +93,6 @@ function BurgerIngredients({ingredients, onModalOpen}) {
 }
 
 BurgerIngredients.propTypes = {
-    ingredients: PropTypes.array,
     onModalOpen: PropTypes.func
 }
 

@@ -28,13 +28,6 @@
     align-self: flex-end;
 }
 
-.middle_item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-right: 8px;
-}
-
 .scrollbar {
     display: flex;
     flex-direction: column;
