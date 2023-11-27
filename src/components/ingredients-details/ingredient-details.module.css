@@ -1,0 +1,25 @@
+.details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    width: 480px;
+    margin-bottom: 16px;
+}
+
+.info {
+    display: flex;
+    gap: 20px;
+    padding-top: 32px;
+    padding-left: 0;
+    margin: 0;
+}
+
+.info_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #8585AD;
+}

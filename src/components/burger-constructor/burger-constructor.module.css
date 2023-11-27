@@ -1,0 +1,59 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+    margin-bottom: 52px;
+}
+
+.bottom {
+    max-width: 568px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 40px;
+}
+
+.price_section {
+    display: flex;
+    align-items: center;
+}
+
+.elements {
+    margin: 100px 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: flex-end;
+}
+
+.middle_item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-right: 8px;
+}
+
+.scrollbar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 432px;
+    overflow-y: scroll;
+    padding-left: 0;
+    margin: 0;
+}
+
+.scrollbar::-webkit-scrollbar {
+    width: 8px;
+    background-color: #2F2F37;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: #8585AD;
+}
+
+.border_item {
+    margin-left: 32px;
+}
