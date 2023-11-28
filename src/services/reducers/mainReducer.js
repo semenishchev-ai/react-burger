@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT, DELETE_INGREDIENT, DELETE_INGREDIENT_DETAILS, FETCH_INGREDIENTS, SET_ORDER_NUMBER, SET_INGREDIENT_DETAILS, MOVE_INGREDIENT } from "../actions"
+import { ADD_INGREDIENT, DELETE_INGREDIENT, DELETE_INGREDIENT_DETAILS, FETCH_INGREDIENTS, SET_ORDER_NUMBER, SET_INGREDIENT_DETAILS, MOVE_INGREDIENT, CLEAR_CONSTRUCTOR } from "../actions"
 
 const initialState = {
     fetchedIngredients: [],
@@ -77,6 +77,19 @@ export const mainReducer = (state = initialState, action) => {
           return {
             ...state,
             ingredientsConstructorList: newArray,
+          }
+        case CLEAR_CONSTRUCTOR:
+          return {
+            ...state,
+            fetchedIngredients: [...state.fetchedIngredients].map(
+              (elem) => {
+                return {
+                  ...elem,
+                  counter: 0,
+                }
+              }
+            ),
+            ingredientsConstructorList: [],
           }
         default:
           return state;

@@ -1,17 +1,9 @@
-import { FETCH_INGREDIENTS, SET_ORDER_NUMBER } from ".";
-
-const getUrl = "https://norma.nomoreparties.space/api/ingredients";
-const postUrl = "https://norma.nomoreparties.space/api/orders";
+import { CLEAR_CONSTRUCTOR, FETCH_INGREDIENTS, SET_ORDER_NUMBER } from ".";
+import { request } from "../../utils/api";
 
 export function fetchIngredients() {
     return function(dispatch) {
-        fetch(getUrl)
-        .then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка ${res.status}`);
-        })
+        request('/ingredients')
         .then((res) => {
             dispatch({
                 type: FETCH_INGREDIENTS,
@@ -26,7 +18,7 @@ export function fetchIngredients() {
 export function postOrder(orderList) {
     const idArray = orderList.map((elem) => elem._id);
     return function(dispatch) {
-        fetch(postUrl, {
+        request('/orders', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
@@ -36,15 +28,14 @@ export function postOrder(orderList) {
             }),
         })
         .then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-            return Promise.reject(`Ошибка ${res.status}`);
-        })
-        .then((res) => {
             dispatch({
                 type: SET_ORDER_NUMBER,
                 number: res.order.number,
+            })
+        })
+        .then(() => {
+            dispatch({
+                type: CLEAR_CONSTRUCTOR,
             })
         })
         .catch(console.error);

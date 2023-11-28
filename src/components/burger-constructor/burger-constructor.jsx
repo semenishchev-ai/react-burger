@@ -18,8 +18,6 @@ function BurgerConstructor({onModalOpen}) {
         onModalOpen('', <OrderDetails />)
     }
 
-    const currentId = Date.now();
-
     const onDropHandler = (item) => {
         if (item.type === 'bun') {
             const bunElem = ingredientsConstructorList.find((elem) => elem.type === 'bun');
@@ -30,6 +28,7 @@ function BurgerConstructor({onModalOpen}) {
             });
             }
         }
+        const currentId = Date.now();
         dispatch({
             type: ADD_INGREDIENT,
             item: item,
@@ -91,7 +90,7 @@ function BurgerConstructor({onModalOpen}) {
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+                <Button disabled={sum === 0} htmlType="button" type="primary" size="medium" onClick={onClick}>
                     Оформить заказ
                 </Button>    
             </div>

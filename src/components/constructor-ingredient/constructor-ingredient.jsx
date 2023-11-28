@@ -26,7 +26,7 @@ const ConstructorIngredient = ({elem, ind}) => {
         }),
     });
 
-    const [{isHover}, dropRef] = useDrop({
+    const [, dropRef] = useDrop({
         accept: 'constructorElement',
         hover: (item, monitor) => {
             if (item.ind === ind) {
@@ -45,9 +45,6 @@ const ConstructorIngredient = ({elem, ind}) => {
             moveItem(item.ind, ind);
             item.ind = ind;
         },
-        collect: monitor => ({
-            isHover: monitor.isOver(),
-        })
     });
 
     const onDeleteHandler = (elem) => {
@@ -59,11 +56,10 @@ const ConstructorIngredient = ({elem, ind}) => {
 
     dragRef(dropRef(ref));
 
-    const opacity = isHover ? 0.5 : 1;
-
+    const opacity = isDragging ? 0 : 1;
+    
     return (
-        !isDragging && 
-        (<li ref={ref} className={styles.middle_item} key={elem.currentId} style={{opacity}}>
+        <li ref={ref} className={styles.middle_item} key={elem.currentId} style={{opacity}}>
             <DragIcon type="primary"/>
             <ConstructorElement
                 handleClose={() => onDeleteHandler(elem)}
@@ -71,7 +67,7 @@ const ConstructorIngredient = ({elem, ind}) => {
                 price={elem.price}
                 thumbnail={elem.image}
             />
-        </li>)
+        </li>
     );
 }
 
