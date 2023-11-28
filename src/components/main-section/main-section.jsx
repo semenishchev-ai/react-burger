@@ -3,18 +3,21 @@ import PropTypes from 'prop-types';
 import BurgerIngredients from "../burger-ingregients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from './main-section.module.css';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
-function MainSection({ingredients, onModalOpen}) {
+function MainSection({onModalOpen}) {
     return (
-        <main className={styles.section}>
-            <BurgerIngredients ingredients={ingredients} onModalOpen={onModalOpen}/>
-            <BurgerConstructor ingredients={ingredients} onModalOpen={onModalOpen}/>
-        </main>
+        <DndProvider backend={HTML5Backend}>
+            <main className={styles.section}>
+                <BurgerIngredients onModalOpen={onModalOpen}/>
+                <BurgerConstructor onModalOpen={onModalOpen}/>
+            </main>
+        </DndProvider>
     )
 }
 
 MainSection.propTypes = {
-    ingredients: PropTypes.array,
     onModalOpen: PropTypes.func
 }
 

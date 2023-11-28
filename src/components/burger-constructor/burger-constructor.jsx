@@ -1,55 +1,87 @@
-import { Button, CurrencyIcon, ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button, CurrencyIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
 import React from "react";
 import PropTypes from 'prop-types';
 import styles from './burger-constructor.module.css'
 import OrderDetails from "../order-details/order-details";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrop } from "react-dnd";
+import { ADD_INGREDIENT, DELETE_INGREDIENT } from "../../services/actions";
+import { postOrder } from "../../services/actions/actions";
+import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 
-function BurgerConstructor({ingredients, onModalOpen}) {    
+function BurgerConstructor({onModalOpen}) {    
+    const dispatch = useDispatch();
+    const ingredientsConstructorList = useSelector(store => store.mainReducer.ingredientsConstructorList);
+
     const onClick = () => {
+        dispatch(postOrder(ingredientsConstructorList));
         onModalOpen('', <OrderDetails />)
     }
 
-    let sum = 2 * parseInt(ingredients[0].price);
+    const onDropHandler = (item) => {
+        if (item.type === 'bun') {
+            const bunElem = ingredientsConstructorList.find((elem) => elem.type === 'bun');
+            if (bunElem) {
+            dispatch({
+                type: DELETE_INGREDIENT,
+                item: bunElem,
+            });
+            }
+        }
+        const currentId = Date.now();
+        dispatch({
+            type: ADD_INGREDIENT,
+            item: item,
+            id: currentId,
+        });
+    };
+
+    const [, dropTarget] = useDrop({
+        accept: 'constructorItem',
+        drop(item) {
+            onDropHandler(item);
+        },
+    });
+
+    const bunElem = (ingredientsConstructorList.find((elem) => elem.type === 'bun'));
+
+    let sum = 0;
 
     return (
-        <section className={styles.section}>
+        <section ref={dropTarget} className={styles.section}>
             <div className={styles.elements}>
-                <div className={styles.border_item}>
+                {bunElem && 
+                (<div className={styles.border_item}>
                     <ConstructorElement
                         type="top"
                         isLocked={true}
-                        text={ingredients[0].name + " (верх)"}
-                        price={ingredients[0].price}
-                        thumbnail={ingredients[0].image}
+                        text={bunElem.name + " (верх)"}
+                        price={bunElem.price}
+                        thumbnail={bunElem.image}
                     />
-                </div>
+                </div>)}
                 <ul className={styles.scrollbar}>
-                    {ingredients.map((elem) => {
+                    {ingredientsConstructorList.map((elem, ind) => {
                         if (elem.type === "bun") {
+                            sum += 2 * parseInt(elem.price);
                             return null;
                         }
                         sum += parseInt(elem.price);
                         return (
-                            <li className={styles.middle_item} key={elem._id}>
-                                <DragIcon type="primary"/>
-                                <ConstructorElement
-                                    text={elem.name}
-                                    price={elem.price}
-                                    thumbnail={elem.image}
-                                />
-                            </li>
+                            <ConstructorIngredient elem={elem} ind={ind} key={elem.currentId}/>
                         )
                     })}
                 </ul>
-                <div className={styles.border_item}>
+                {bunElem && 
+                (<div className={styles.border_item}>
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
-                        text={ingredients[0].name + " (низ)"}
-                        price={ingredients[0].price}
-                        thumbnail={ingredients[0].image}
+                        text={bunElem.name + " (низ)"}
+                        price={bunElem.price}
+                        thumbnail={bunElem.image}
                     />
-                </div>
+                </div>)}
             </div>
             <div className={styles.bottom}>
                 <div className={styles.price_section}>
@@ -58,7 +90,7 @@ function BurgerConstructor({ingredients, onModalOpen}) {
                     </p>
                     <CurrencyIcon type="primary" />
                 </div>
-                <Button htmlType="button" type="primary" size="medium" onClick={onClick}>
+                <Button disabled={sum === 0} htmlType="button" type="primary" size="medium" onClick={onClick}>
                     Оформить заказ
                 </Button>    
             </div>
@@ -67,7 +99,6 @@ function BurgerConstructor({ingredients, onModalOpen}) {
 }
 
 BurgerConstructor.propTypes = {
-    ingredients: PropTypes.array,
     onModalOpen: PropTypes.func
 }
 

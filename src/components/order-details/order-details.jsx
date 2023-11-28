@@ -2,14 +2,20 @@ import React from "react";
 import styles from './order-details.module.css';
 
 import doneImagePath from '../../images/done.svg';
+import { useSelector } from "react-redux";
 
 function OrderDetails() {
+    const orderNumber = useSelector(state => state.mainReducer.order);
+    const isOrderDone = orderNumber !== 0 ;
 
     return(
         <div className={styles.details}>
-            <p className={styles.number + ' text text_type_digits-large mt-4'}>
-                034536
-            </p>
+            {isOrderDone && (<p className={styles.number + ' text text_type_digits-large mt-4'}>
+                {orderNumber}
+            </p>)}
+            {!isOrderDone && (<p className='text text_type_main-large mt-4'>
+                Загрузка...
+            </p>)}
             <p className='text text_type_main-medium mt-8 mb-15'>
                 идентификатор заказа
             </p>
