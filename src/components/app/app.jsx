@@ -1,29 +1,24 @@
-import React, { useEffect } from "react";
-import AppHeader from "../app-header/app-header";
-import MainSection from "../main-section/main-section";
-import Modal from "../modal/modal";
-import { useModal } from "../../hooks/useModal";
-import { fetchIngredients } from "../../services/actions/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from '../../pages/home';
+import LoginPage from '../../pages/login';
+import RegisterPage from '../../pages/register';
+import ForgotPasswordPage from '../../pages/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password';
+import ProfilePage from '../../pages/profile';
 
 function App () {
-    const { isModalOpen, openModal, closeModal, modalChild, modalHeader } = useModal();
-    const dataFetched = useSelector(store =>  store.mainReducer.isFetched);   
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchIngredients())
-    }, [dispatch])
-
     return (
-        <>
-            <AppHeader />
-            {dataFetched && (<MainSection onModalOpen={openModal}/>)}
-            {dataFetched && isModalOpen && (<Modal header={modalHeader} onClose={closeModal}>
-                {modalChild}
-                </Modal>)}
-        </>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                {/* <Route path="/ingredietns/:id" element={<IngredientPage />} /> */}
+            </Routes>
+        </BrowserRouter>
     )
 }
 
