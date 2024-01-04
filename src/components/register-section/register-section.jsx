@@ -35,7 +35,7 @@ function RegisterSection() {
                 <div className={styles.input}>
                     <PasswordInput value={form.password} name={'password'} onChange={onChange}/>
                 </div>
-                <Button type="primary">
+                <Button type="primary" htmlType="submit">
                     Зарегистрироваться
                 </Button>
             </form>

@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredient.module.css';
 import IngredientDetails from "../ingredients-details/ingredient-details";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SET_INGREDIENT_DETAILS } from "../../services/actions";
 import { useDrag } from "react-dnd";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const BurgerIngredient = ({ingredient, onModalOpen}) => {
+const BurgerIngredient = ({ingredient}) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [{isDrag}, dragRef] = useDrag({
         type: 'constructorItem',
@@ -23,7 +25,7 @@ const BurgerIngredient = ({ingredient, onModalOpen}) => {
             type: SET_INGREDIENT_DETAILS,
             item: ingredient,
         })
-        onModalOpen('Детали ингредиента', <IngredientDetails/>)
+        navigate('/ingredients/' + ingredient._id);        
     }
 
     return (
@@ -46,8 +48,7 @@ const BurgerIngredient = ({ingredient, onModalOpen}) => {
 }
 
 BurgerIngredient.propTypes = {
-    ingredient: PropTypes.object,
-    onModalOpen: PropTypes.func
+    ingredient: PropTypes.object
 }
 
 export default BurgerIngredient;

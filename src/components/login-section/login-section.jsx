@@ -1,14 +1,13 @@
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login-section.module.css"
 import React, { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../services/actions/auth-actions";
 
 function LoginSection() {
     const [form, setValue] = useState({ email: '', password: '' });
     const dispatch = useDispatch();
-
     const onChange = (e) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
@@ -32,7 +31,7 @@ function LoginSection() {
                 <div className={styles.input}>
                     <PasswordInput value={form.password} name={'password'} onChange={onChange}/>
                 </div>
-                <Button type="primary">
+                <Button type="primary" htmlType="submit">
                     Войти
                 </Button>
             </form>

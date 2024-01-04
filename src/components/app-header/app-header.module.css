@@ -18,9 +18,11 @@
     color: #8585AD;
 }
 
-.nav_item:first-of-type {
+.nav_item_active{
     color: #F2F2F3;
-    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
 }
 
 .item_text {
@@ -32,4 +34,5 @@
 
 .logo_box {
     padding: 8px 289px 8px 112px;
+    cursor: pointer;
 }

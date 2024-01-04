@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "../actions";
+import { CHECK_TOKEN, LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "../actions";
 
 const initState = {
     user: {},
@@ -26,6 +26,12 @@ export const authReducer = (state = initState,  action) => {
                 user: {},
                 isAuthorized: false,
             };
+        case CHECK_TOKEN:
+            return {
+                ...state,
+                user: action.data.user,
+                isAuthorized: true,
+            }
         default:
             return state;
     }

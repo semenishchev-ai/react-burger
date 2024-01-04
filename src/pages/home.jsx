@@ -1,21 +1,14 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import AppHeader from "../components/app-header/app-header";
 import MainSection from "../components/main-section/main-section";
 import Modal from "../components/modal/modal";
 import { useModal } from "../hooks/useModal";
-import { fetchIngredients } from "../services/actions/actions";
+import { useSelector } from "react-redux";
 
 function HomePage() {
+    const dataFetched = useSelector(store =>  store.mainReducer.isFetched);
     const { isModalOpen, openModal, closeModal, modalChild, modalHeader } = useModal();
-    const dataFetched = useSelector(store =>  store.mainReducer.isFetched);   
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchIngredients())
-    }, [dispatch])
-
+     
     return (
         <>
             <AppHeader />

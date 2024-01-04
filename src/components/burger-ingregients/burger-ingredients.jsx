@@ -5,7 +5,7 @@ import styles from './burger-ingredients.module.css'
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
 import { useSelector } from "react-redux";
 
-function BurgerIngredients({onModalOpen}) {
+function BurgerIngredients() {
     const [current, setCurrent] = React.useState('one')
 
     const ingredients = useSelector(store => store.mainReducer.fetchedIngredients);
@@ -19,23 +19,27 @@ function BurgerIngredients({onModalOpen}) {
     const main = document.getElementById('three');
 
     const onScrollListener = (event) => {
-        const distBuns = Math.abs(scrollWindow.getBoundingClientRect().top - buns.getBoundingClientRect().top);
-        const distSauces = Math.abs(scrollWindow.getBoundingClientRect().top - sauces.getBoundingClientRect().top);
-        const distMain = Math.abs(scrollWindow.getBoundingClientRect().top - main.getBoundingClientRect().top);
+        if (scrollWindow) {
+            const distBuns = Math.abs(scrollWindow.getBoundingClientRect().top - buns.getBoundingClientRect().top);
+            const distSauces = Math.abs(scrollWindow.getBoundingClientRect().top - sauces.getBoundingClientRect().top);
+            const distMain = Math.abs(scrollWindow.getBoundingClientRect().top - main.getBoundingClientRect().top);
 
-        const minDist = Math.min(distBuns, distSauces, distMain);
-        switch (minDist) {
-            case distBuns:
-                setCurrent("one");
-                return;
-            case distSauces:
-                setCurrent("two");
-                return;
-            case distMain:
-                setCurrent("three");
-                return;
-            default:
-                return;
+            const minDist = Math.min(distBuns, distSauces, distMain);
+            switch (minDist) {
+                case distBuns:
+                    setCurrent("one");
+                    return;
+                case distSauces:
+                    setCurrent("two");
+                    return;
+                case distMain:
+                    setCurrent("three");
+                    return;
+                default:
+                    return;
+            }
+        } else {
+            return;
         }
     }
 
@@ -62,7 +66,7 @@ function BurgerIngredients({onModalOpen}) {
                 <div className={styles.choose_block}>
                     {bunArray.map((bun) => {
                         return (
-                            <BurgerIngredient ingredient={bun} key={bun._id} onModalOpen={onModalOpen}/>
+                            <BurgerIngredient ingredient={bun} key={bun._id}/>
                         )
                     })}
                 </div>
@@ -72,7 +76,7 @@ function BurgerIngredients({onModalOpen}) {
                 <div className={styles.choose_block}>
                     {sauceArray.map((sauce) => {
                         return (
-                            <BurgerIngredient ingredient={sauce} key={sauce._id} onModalOpen={onModalOpen}/>
+                            <BurgerIngredient ingredient={sauce} key={sauce._id}/>
                         )
                     })}
                     
@@ -83,17 +87,13 @@ function BurgerIngredients({onModalOpen}) {
                 <div className={styles.choose_block}>
                     {mainArray.map((main) => {
                         return (
-                            <BurgerIngredient ingredient={main} key={main._id} onModalOpen={onModalOpen}/>
+                            <BurgerIngredient ingredient={main} key={main._id}/>
                         )
                     })}
                 </div>
             </div>
         </section>
     )
-}
-
-BurgerIngredients.propTypes = {
-    onModalOpen: PropTypes.func
 }
 
 export default BurgerIngredients;

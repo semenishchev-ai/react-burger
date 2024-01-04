@@ -27,7 +27,7 @@ function ForgotPasswordSection() {
                 <div className={styles.input}>
                     <EmailInput value={form.name} placeholder={'Укажите e-mail'} name={'email'} onChange={onChange}/>
                 </div>
-                <Button type="primary">
+                <Button type="primary" htmlType="button">
                     Восстановить
                 </Button>
             </form>
