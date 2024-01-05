@@ -8,12 +8,19 @@ import { useDrop } from "react-dnd";
 import { ADD_INGREDIENT, DELETE_INGREDIENT } from "../../services/actions";
 import { postOrder } from "../../services/actions/actions";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
+import { useNavigate } from "react-router-dom";
 
 function BurgerConstructor({onModalOpen}) {    
     const dispatch = useDispatch();
     const ingredientsConstructorList = useSelector(store => store.mainReducer.ingredientsConstructorList);
+    const isAuthorized = useSelector(store => store.authReducer.isAuthorized);
+    const navigate = useNavigate();
 
     const onClick = () => {
+        if (!isAuthorized) {
+            navigate('/login');
+            return;
+        }
         dispatch(postOrder(ingredientsConstructorList));
         onModalOpen('', <OrderDetails />)
     }

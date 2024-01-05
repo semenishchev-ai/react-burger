@@ -10,7 +10,7 @@ function MainSection({onModalOpen}) {
     return (
         <DndProvider backend={HTML5Backend}>
             <main className={styles.section}>
-                <BurgerIngredients onModalOpen={onModalOpen}/>
+                <BurgerIngredients />
                 <BurgerConstructor onModalOpen={onModalOpen}/>
             </main>
         </DndProvider>
