@@ -4,10 +4,7 @@ import LoginSection from "../components/login-section/login-section";
 
 function LoginPage() {
     return (
-        <>
-            <AppHeader />
-            <LoginSection />
-        </>
+        <LoginSection />
     )
 }
 

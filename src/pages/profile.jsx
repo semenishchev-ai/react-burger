@@ -4,10 +4,7 @@ import ProfileSection from "../components/profile-section/profile-section";
 
 function ProfilePage() {
     return (
-        <>
-            <AppHeader />
-            <ProfileSection />
-        </>
+        <ProfileSection />
     )
 }
 

@@ -4,10 +4,7 @@ import ForgotPasswordSection from "../components/forgot-password-section/forgot-
 
 function ForgotPasswordPage() {
     return (
-        <>
-            <AppHeader />
-            <ForgotPasswordSection />
-        </>
+        <ForgotPasswordSection />
     )
 }
 

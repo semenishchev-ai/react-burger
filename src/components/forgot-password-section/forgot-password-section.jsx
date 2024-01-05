@@ -1,11 +1,13 @@
 import React, { useCallback, useState } from "react";
 import styles from "./forgot-password-section.module.css"
 import { Button, EmailInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { forgotPassword } from "../../utils/api";
 
 function ForgotPasswordSection() {
     const [form, setValue] = useState({ email: '' });
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const onChange = (e) => {
         setValue({ ...form, [e.target.name]: e.target.value });
@@ -15,6 +17,8 @@ function ForgotPasswordSection() {
         (e) => {
             e.preventDefault();
             forgotPassword("/password-reset", form.email)
+
+            navigate('/reset-password', {replace: true, state: {from: location}});
         }, [form]
     )
 
@@ -25,9 +29,9 @@ function ForgotPasswordSection() {
                     Восстановление пароля
                 </h1>
                 <div className={styles.input}>
-                    <EmailInput value={form.name} placeholder={'Укажите e-mail'} name={'email'} onChange={onChange}/>
+                    <EmailInput value={form.email} placeholder={'Укажите e-mail'} name={'email'} onChange={onChange} />
                 </div>
-                <Button type="primary" htmlType="button">
+                <Button type="primary" htmlType="submit">
                     Восстановить
                 </Button>
             </form>

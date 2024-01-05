@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserInfo } from '../../services/actions/auth-actions';
@@ -8,6 +8,7 @@ export const ProtectedRoute = ({ element }) => {
   const [isUserLoaded, setUserLoaded] = useState(false);
   const auth = useSelector((store) => store.authReducer.isAuthorized);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const init = async () => {
     dispatch(getUserInfo());
@@ -22,7 +23,7 @@ export const ProtectedRoute = ({ element }) => {
     return null;
   }
 
-  return auth ? element : <Navigate to="/login" replace/>;
+  return auth ? element : <Navigate to="/login" state={{ from: location}}/>;
 }
 
 ProtectedRoute.propTypes = {

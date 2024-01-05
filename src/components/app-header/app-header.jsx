@@ -12,8 +12,11 @@ function AppHeader() {
         switch (location.pathname) {
             case '/profile':
                 setActive(2);
+                return;
+            default:
+                setActive(0);
         }
-    }, [location.pathname])
+    }, [location])
 
     function onClick() {
         navigate('/');
@@ -24,15 +27,15 @@ function AppHeader() {
             <nav className={styles.nav}>
                 <div className={(active ===  0 ? styles.nav_item_active : styles.nav_item) + ' text text_type_main-default'}>
                     <BurgerIcon type={(active ===  0 ? "primary" : "secondary")} />
-                    <a className={styles.item_text} href='/'>
+                    <Link className={styles.item_text} to='/'>
                         Конструктор
-                    </a>
+                    </Link>
                 </div>
                 <div className={(active ===  1 ? styles.nav_item_active : styles.nav_item) + ' text text_type_main-default'}>
                     <ListIcon type={(active ===  1 ? "primary" : "secondary")} />
-                    <a className={styles.item_text} href='/'>
+                    <Link className={styles.item_text} to='/'>
                         Лента заказов
-                    </a>
+                    </Link>
                 </div>
                 <div className={styles.logo_box} onClick={onClick}>
                     <Logo />

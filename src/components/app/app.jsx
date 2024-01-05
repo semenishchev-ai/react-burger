@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, useNavigate, useNavigationType } from 'react-router-dom';
 import HomePage from '../../pages/home';
 import LoginPage from '../../pages/login';
 import RegisterPage from '../../pages/register';
@@ -13,15 +13,21 @@ import { useEffect } from 'react';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredients-details/ingredient-details';
 import { DELETE_INGREDIENT_DETAILS } from '../../services/actions';
+import AppHeader from '../app-header/app-header';
 
 function App () {
-    const dispatch = useDispatch();
     const loggedIn = useSelector((store) => store.authReducer.isAuthorized);
     const navigate = useNavigate();
-    
     const navType = useNavigationType();
+    const location = useLocation();
+    const background = (navType === 'POP' ? undefined : location.state?.background);
+    const from = location.state?.from || '/';
+
+    const dispatch = useDispatch();
+
     const modalHeader = 'Детали ингредиента';
     const item = useSelector(state => state.mainReducer.currentIngredient);
+    const isNextStep = (from.pathname === '/forgot-password');
 
     function onClose() {
         dispatch({
@@ -36,27 +42,27 @@ function App () {
     
 
     return (
-        <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={loggedIn ? <Navigate to="/" /> : <LoginPage />}/>
-            <Route path="/register" element={loggedIn ? <Navigate to="/" /> : <RegisterPage />} />
-            <Route path="/forgot-password" element={loggedIn ? <Navigate to="/" /> : <ForgotPasswordPage />} />
-            <Route path="/reset-password" element={loggedIn ? <Navigate to="/" /> : <ProtectedRoute element={<ResetPasswordPage />} />} />
-            <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
-            {!item._id && <Route path="/ingredients/:id" element={<IngredientPage />} />}
-
-            {item._id && 
-            <Route path="/ingredients/:id" element={
-                <>
-                    <HomePage />
-                    <Modal header={modalHeader} onClose={onClose}>
-                    {<IngredientDetails ingredient={item} />}
-                    </Modal>
-                </>
-                }
-            />
-            }
-        </Routes>
+        <>
+            <AppHeader />
+            <Routes location={background || location}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={loggedIn ? <Navigate to={from} /> : <LoginPage />}/>
+                <Route path="/register" element={loggedIn ? <Navigate to={from} /> : <RegisterPage />} />
+                <Route path="/forgot-password" element={loggedIn ? <Navigate to={from} /> : <ForgotPasswordPage />} />
+                <Route path="/reset-password" element={!isNextStep ? <Navigate to={from} /> : <ResetPasswordPage />} />
+                <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
+                <Route path="/ingredients/:id" element={<IngredientPage />} />
+            </Routes>
+            {background && (
+                <Routes>
+                    <Route path="/ingredients/:id" element={
+                        <Modal header={modalHeader} onClose={onClose}>
+                            <IngredientDetails ingredient={item} />
+                        </Modal>}
+                    />
+                </Routes>
+            )}
+        </>        
     )
 }
 

@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from "react";
 import styles from "./reset-password-section.module.css"
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { resetPassword } from "../../utils/api";
 
 function ResetPasswordSection() {
-    const [form, setValue] = useState({ email: '', password: '' });
+    const [form, setValue] = useState({ password: '', code: '' });
+    const navigate = useNavigate();
 
     const onChange = (e) => {
         setValue({ ...form, [e.target.name]: e.target.value });
@@ -14,8 +15,13 @@ function ResetPasswordSection() {
     const saveNewPassword = useCallback(
         (e) => {
             e.preventDefault();
-            resetPassword("/password-reset/reset", form.email, form.code);
-        }, [form]
+            resetPassword("/password-reset/reset", form.password, form.code)
+            .then((ans) => {
+                if (ans.success) {
+                    navigate('/login');
+                }
+            })
+        }, [form, navigate]
     )
 
     return (
@@ -25,10 +31,10 @@ function ResetPasswordSection() {
                     Восстановление пароля
                 </h1>
                 <div className={styles.input}>
-                    <PasswordInput value={form.name} placeholder={'Введите новый пароль'} name={'password'} onChange={onChange}/>
+                    <PasswordInput value={form.password} placeholder={'Введите новый пароль'} name={'password'} onChange={onChange}/>
                 </div>
                 <div className={styles.input}>
-                    <Input value={form.name} placeholder={'Введите код из письма'} name={'code'} onChange={onChange}/>
+                    <Input value={form.code} placeholder={'Введите код из письма'} name={'code'} onChange={onChange}/>
                 </div>
                 <Button type="primary" htmlType="submit">
                     Сохранить

@@ -4,10 +4,7 @@ import ResetPasswordSection from "../components/reset-password-section/reset-pas
 
 function ResetPasswordPage() {
     return (
-        <>
-            <AppHeader />
-            <ResetPasswordSection />
-        </>
+        <ResetPasswordSection />
     )
 }
 

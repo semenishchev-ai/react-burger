@@ -1,7 +1,6 @@
 import React from "react";
-import AppHeader from "../components/app-header/app-header";
 import IngredientDetails from "../components/ingredients-details/ingredient-details";
-import { useLocation, useNavigationType, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styles from "./ingredient-page.module.css";
 
@@ -14,7 +13,6 @@ function IngredientPage() {
     return (
         <>
             {dataFetched && (<div className={styles.section}>
-                <AppHeader />
                 <p className={styles.text+ ' text text_type_main-medium'}>
                     Детали ингредиента
                 </p>

@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredient.module.css';
-import IngredientDetails from "../ingredients-details/ingredient-details";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SET_INGREDIENT_DETAILS } from "../../services/actions";
 import { useDrag } from "react-dnd";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const BurgerIngredient = ({ingredient}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [{isDrag}, dragRef] = useDrag({
         type: 'constructorItem',
@@ -25,7 +25,7 @@ const BurgerIngredient = ({ingredient}) => {
             type: SET_INGREDIENT_DETAILS,
             item: ingredient,
         })
-        navigate('/ingredients/' + ingredient._id);        
+        navigate('/ingredients/' + ingredient._id, {state: {background: location}});        
     }
 
     return (

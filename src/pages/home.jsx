@@ -11,7 +11,6 @@ function HomePage() {
      
     return (
         <>
-            <AppHeader />
             {dataFetched && (<MainSection onModalOpen={openModal}/>)}
             {dataFetched && isModalOpen && (<Modal header={modalHeader} onClose={closeModal}>
                 {modalChild}

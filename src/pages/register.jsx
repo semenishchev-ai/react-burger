@@ -4,10 +4,7 @@ import RegisterSection from "../components/register-section/register-section";
 
 function RegisterPage() {
     return (
-        <>
-            <AppHeader />
-            <RegisterSection />
-        </>
+        <RegisterSection />
     )
 }
 
