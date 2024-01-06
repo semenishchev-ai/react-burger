@@ -1,10 +1,11 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { DELETE_INGREDIENT, MOVE_INGREDIENT } from "../../services/actions";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./constructor-ingredient.module.css";
 import { useDrag, useDrop } from "react-dnd";
 import PropTypes from 'prop-types';
+import ActionTypes from "../../services/actions";
+
 
 const ConstructorIngredient = ({elem, ind}) => {
     const ref = useRef(null);
@@ -12,7 +13,7 @@ const ConstructorIngredient = ({elem, ind}) => {
 
     const moveItem = (dragIndex, hoverIndex) => {
         dispatch({
-            type: MOVE_INGREDIENT,
+            type: ActionTypes.MOVE_INGREDIENT,
             dragIndex: dragIndex,
             hoverIndex: hoverIndex,
         });
@@ -49,7 +50,7 @@ const ConstructorIngredient = ({elem, ind}) => {
 
     const onDeleteHandler = (elem) => {
         dispatch({
-            type: DELETE_INGREDIENT,
+            type: ActionTypes.DELETE_INGREDIENT,
             item: elem,
         });
     } 

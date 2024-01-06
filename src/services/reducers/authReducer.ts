@@ -1,4 +1,5 @@
-import { CHECK_TOKEN, LOGIN_USER, LOGOUT_USER, REGISTER_USER } from "../actions";
+import { TUserData } from "../../utils/types";
+import ActionTypes from "../actions";
 
 const initState = {
     user: {},
@@ -6,27 +7,34 @@ const initState = {
     isAuthorized: false,
 };
 
-export const authReducer = (state = initState,  action) => {
+export type TActionAuth = {
+    type: ActionTypes,
+    data: {
+        user: TUserData,
+    },
+}
+
+export const authReducer = (state = initState,  action: TActionAuth) => {
     switch (action.type) {
-        case REGISTER_USER:
+        case ActionTypes.REGISTER_USER:
             return {
                 ...state,
                 user: action.data.user,
                 isAuthorized: true,
             };
-        case LOGIN_USER:
+        case ActionTypes.LOGIN_USER:
             return {
                 ...state,
                 user: action.data.user,
                 isAuthorized: true,
             };
-        case LOGOUT_USER:
+        case ActionTypes.LOGOUT_USER:
             return {
                 ...state,
                 user: {},
                 isAuthorized: false,
             };
-        case CHECK_TOKEN:
+        case ActionTypes.CHECK_TOKEN:
             return {
                 ...state,
                 user: action.data.user,

@@ -1,14 +1,15 @@
-import { CHECK_TOKEN, LOGIN_USER, LOGOUT_USER, REGISTER_USER } from ".";
+import ActionTypes from ".";
 import { getUser, login, logout, patchUser, registration, request } from "../../utils/api";
+import { TDispatch, TUserData } from "../../utils/types";
 
-export function registrationRequest(data) {
-    return function(dispatch) {
+export function registrationRequest(data: TUserData) {
+    return function(dispatch: TDispatch) {
         registration("/auth/register", data)
         .then((ans) => {
             setCookie('accessToken', ans.accessToken);
             localStorage.setItem('refreshToken', ans.refreshToken)
             dispatch({
-                type: REGISTER_USER,
+                type: ActionTypes.REGISTER_USER,
                 data: ans,
             })
         })
@@ -18,14 +19,14 @@ export function registrationRequest(data) {
     }
 }
 
-export function loginRequest(data) {
-    return function(dispatch) {
+export function loginRequest(data: TUserData) {
+    return function(dispatch: TDispatch) {
         login("/auth/login", data)
         .then((ans) => {
             setCookie('accessToken', ans.accessToken);
             localStorage.setItem('refreshToken', ans.refreshToken)
             dispatch({
-                type: LOGIN_USER,
+                type: ActionTypes.LOGIN_USER,
                 data: ans,
             })
         })
@@ -35,14 +36,14 @@ export function loginRequest(data) {
     }
 }
 
-export function logoutRequest(data) {
-    return function(dispatch) {
-        logout("/auth/logout", data)
+export function logoutRequest() {
+    return function(dispatch: TDispatch) {
+        logout("/auth/logout")
         .then((ans) => {
             deleteCookie('accessToken');
             localStorage.setItem('refreshToken', ans.refreshToken)
             dispatch({
-                type: LOGOUT_USER,
+                type: ActionTypes.LOGOUT_USER,
                 data: ans,
             })
         })
@@ -68,11 +69,11 @@ export function refreshToken() {
 }
 
 export function getUserInfo() {
-  return function(dispatch) {
-    getUser('/auth/user')
+  return function(dispatch: TDispatch) {
+    return getUser('/auth/user')
     .then((ans) => {
       dispatch({
-          type: CHECK_TOKEN,
+          type: ActionTypes.CHECK_TOKEN,
           data: ans,
       })
     })
@@ -82,12 +83,12 @@ export function getUserInfo() {
   }
 }
 
-export function patchUserInfo(data) {
-  return function(dispatch) {
+export function patchUserInfo(data: TUserData) {
+  return function(dispatch: TDispatch) {
     patchUser('/auth/user', data)
     .then((ans) => {
       dispatch({
-          type: CHECK_TOKEN,
+          type: ActionTypes.CHECK_TOKEN,
           data: ans,
       })
     })
@@ -97,7 +98,7 @@ export function patchUserInfo(data) {
   }
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string, props?: any) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -120,13 +121,13 @@ export function setCookie(name, value, props) {
     document.cookie = updatedCookie;
 }
 
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matches = document.cookie.match(
       new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function deleteCookie(name) {
-  setCookie(name, null, { expires: -1 });
+export function deleteCookie(name: string) {
+  setCookie(name, '', { expires: -1 });
 }

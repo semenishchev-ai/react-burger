@@ -12,7 +12,7 @@ import { fetchIngredients } from '../../services/actions/actions';
 import { useEffect } from 'react';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredients-details/ingredient-details';
-import { DELETE_INGREDIENT_DETAILS } from '../../services/actions';
+import ActionTypes from '../../services/actions';
 import AppHeader from '../app-header/app-header';
 
 function App () {
@@ -31,7 +31,7 @@ function App () {
 
     function onClose() {
         dispatch({
-            type: DELETE_INGREDIENT_DETAILS,
+            type: ActionTypes.DELETE_INGREDIENT_DETAILS,
         })
         navigate(-1);
     }

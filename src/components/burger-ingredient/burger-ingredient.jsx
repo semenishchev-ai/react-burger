@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredient.module.css';
 import { useDispatch } from "react-redux";
-import { SET_INGREDIENT_DETAILS } from "../../services/actions";
+import ActionTypes from "../../services/actions";
 import { useDrag } from "react-dnd";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ const BurgerIngredient = ({ingredient}) => {
 
     const onCLick = () => {
         dispatch({
-            type: SET_INGREDIENT_DETAILS,
+            type: ActionTypes.SET_INGREDIENT_DETAILS,
             item: ingredient,
         })
         navigate('/ingredients/' + ingredient._id, {state: {background: location}});        

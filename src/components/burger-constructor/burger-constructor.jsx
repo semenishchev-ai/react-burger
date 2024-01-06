@@ -5,7 +5,7 @@ import styles from './burger-constructor.module.css'
 import OrderDetails from "../order-details/order-details";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import { ADD_INGREDIENT, DELETE_INGREDIENT } from "../../services/actions";
+import ActionTypes from "../../services/actions";
 import { postOrder } from "../../services/actions/actions";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 import { useNavigate } from "react-router-dom";
@@ -30,14 +30,14 @@ function BurgerConstructor({onModalOpen}) {
             const bunElem = ingredientsConstructorList.find((elem) => elem.type === 'bun');
             if (bunElem) {
             dispatch({
-                type: DELETE_INGREDIENT,
+                type: ActionTypes.DELETE_INGREDIENT,
                 item: bunElem,
             });
             }
         }
         const currentId = Date.now();
         dispatch({
-            type: ADD_INGREDIENT,
+            type: ActionTypes.ADD_INGREDIENT,
             item: item,
             id: currentId,
         });

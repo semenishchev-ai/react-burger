@@ -19,11 +19,10 @@ function ProfileSection() {
     const onChange = (e) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         setChanged(true);
-        console.log(form);
     };
 
     const onExit = () => {
-        dispatch(logoutRequest(form));
+        dispatch(logoutRequest());
     }
 
     const onCancel = (e) => {

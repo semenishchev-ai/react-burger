@@ -1,13 +1,14 @@
 import { getCookie, refreshToken, setCookie } from "../services/actions/auth-actions";
+import { TUserData } from "./types";
 
 const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res) => {
+const checkResponse = (res: any) => {
     if (res.ok) {
         return res.json();
     } else {
         console.error(`Error ${res.status}: ${res.statusText}`);
-        return res.json().then((errorData) => {
+        return res.json().then((errorData: any) => {
             console.error('Error details:', errorData);
             return Promise.reject(`Error ${res.status}`);
         });
@@ -15,16 +16,16 @@ const checkResponse = (res) => {
 };
 
 
-export const request = async (endpoint, options) => {
+export const request = async (endpoint: string, options?: any) => {
     return fetch(BASE_URL + endpoint, options).then(checkResponse)
 }
 
-export const requestWithRefresh = async (endpoint, options) => {
+export const requestWithRefresh = async (endpoint: string, options: any) => {
   try {
     return request(endpoint, options)
-  } catch(err) {
+  } catch(err: any) {
     if (err.message === 'jwt expired') {
-      const newTokens = await refreshToken();
+      const newTokens: any = await refreshToken();
       localStorage.setItem('refreshToken', newTokens.refreshToken);
       setCookie('accessToken', newTokens.accessToken);
       options.headers.authorization = newTokens.accessToken;
@@ -35,7 +36,7 @@ export const requestWithRefresh = async (endpoint, options) => {
   }
 }
 
-export const registration = (endpoint, data) => {
+export const registration = (endpoint: string, data: TUserData) => {
     const options = {
         method: 'POST',
         headers: {
@@ -51,7 +52,7 @@ export const registration = (endpoint, data) => {
     return request(endpoint, options)
 }
 
-export const login = (endpoint, data) => {
+export const login = (endpoint: string, data: TUserData) => {
     const options = {
         method: 'POST',
         headers: {
@@ -65,7 +66,7 @@ export const login = (endpoint, data) => {
     return request(endpoint, options) 
 }
 
-export const logout = (endpoint, data) => {
+export const logout = (endpoint: string) => {
     const options = {
         method: 'POST',
         headers: {
@@ -79,7 +80,7 @@ export const logout = (endpoint, data) => {
     return request(endpoint, options) 
 }
 
-export const forgotPassword = (endpoint, email) => {
+export const forgotPassword = (endpoint: string, email: string) => {
     const options = {
         method: 'POST',
         headers: {
@@ -93,7 +94,7 @@ export const forgotPassword = (endpoint, email) => {
     return request(endpoint, options)
 }
 
-export const resetPassword = (endpoint, password, code) => {
+export const resetPassword = (endpoint: string, password: string, code: string) => {
     const options = {
         method: 'POST',
         headers: {
@@ -108,7 +109,7 @@ export const resetPassword = (endpoint, password, code) => {
     return request(endpoint, options)
 }
 
-export const getUser = (endpoint) => {
+export const getUser = (endpoint: string) => {
   const options = {
       method: 'GET',
       headers: {
@@ -120,7 +121,7 @@ export const getUser = (endpoint) => {
   return requestWithRefresh(endpoint, options)
 }
 
-export const patchUser = (endpoint, data) => {
+export const patchUser = (endpoint: string, data: TUserData) => {
   const options = {
       method: 'PATCH',
       headers: {
