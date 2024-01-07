@@ -1,12 +1,13 @@
-import { CLEAR_CONSTRUCTOR, FETCH_INGREDIENTS, SET_ORDER_NUMBER } from ".";
+import ActionTypes from ".";
 import { request } from "../../utils/api";
+import { TDispatch, TIngredient } from "../../utils/types";
 
 export function fetchIngredients() {
-    return function(dispatch) {
+    return function(dispatch: TDispatch) {
         request('/ingredients')
         .then((res) => {
             dispatch({
-                type: FETCH_INGREDIENTS,
+                type: ActionTypes.FETCH_INGREDIENTS,
                 data: res.data,
                 isFetched: true,
             })
@@ -14,14 +15,13 @@ export function fetchIngredients() {
         .catch(console.error);
     }
 }
-
-export function postOrder(orderList) {
+export function postOrder(orderList: Array<TIngredient>) {
     const idArray = orderList.map((elem) => elem._id);
-    return function(dispatch) {
+    return function(dispatch: TDispatch) {
         request('/orders', {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 ingredients: idArray,
@@ -29,13 +29,13 @@ export function postOrder(orderList) {
         })
         .then((res) => {
             dispatch({
-                type: SET_ORDER_NUMBER,
+                type: ActionTypes.SET_ORDER_NUMBER,
                 number: res.order.number,
             })
         })
         .then(() => {
             dispatch({
-                type: CLEAR_CONSTRUCTOR,
+                type: ActionTypes.CLEAR_CONSTRUCTOR,
             })
         })
         .catch(console.error);

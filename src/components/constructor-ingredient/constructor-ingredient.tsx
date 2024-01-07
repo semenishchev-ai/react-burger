@@ -1,18 +1,23 @@
-import React, { useRef } from "react";
-import { useDispatch } from "react-redux";
-import { DELETE_INGREDIENT, MOVE_INGREDIENT } from "../../services/actions";
+import React, { FC, useRef } from "react";
 import { ConstructorElement, DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./constructor-ingredient.module.css";
 import { useDrag, useDrop } from "react-dnd";
-import PropTypes from 'prop-types';
+import ActionTypes from "../../services/actions";
+import { TIngredient } from "../../utils/types";
+import { useDispatch } from "../../hooks/useDispatch";
 
-const ConstructorIngredient = ({elem, ind}) => {
-    const ref = useRef(null);
+interface IConstructorIngredientProps {
+    elem: TIngredient;
+    ind: number;
+}
+
+const ConstructorIngredient: FC<IConstructorIngredientProps> = ({elem, ind}) => {
+    const ref = useRef<HTMLLIElement>(null);
     const dispatch = useDispatch();
 
-    const moveItem = (dragIndex, hoverIndex) => {
+    const moveItem = (dragIndex: number, hoverIndex: number) => {
         dispatch({
-            type: MOVE_INGREDIENT,
+            type: ActionTypes.MOVE_INGREDIENT,
             dragIndex: dragIndex,
             hoverIndex: hoverIndex,
         });
@@ -28,13 +33,19 @@ const ConstructorIngredient = ({elem, ind}) => {
 
     const [, dropRef] = useDrop({
         accept: 'constructorElement',
-        hover: (item, monitor) => {
-            if (item.ind === ind) {
+        hover: (item: TIngredient, monitor) => {
+            if (item.ind === ind || item.ind === undefined) {
                 return;
             }
             const boundingClientRect = ref.current?.getBoundingClientRect();
+            if (!boundingClientRect) {
+                return;
+            }
             const hoverCenterY = (boundingClientRect.bottom - boundingClientRect.top) / 2;
             const clientOffset = monitor.getClientOffset();
+            if (!clientOffset) {
+                return;
+            }
             const hoverClientY = clientOffset.y - boundingClientRect.top;
             if (item.ind < ind && hoverClientY < hoverCenterY) {
                 return;
@@ -47,9 +58,9 @@ const ConstructorIngredient = ({elem, ind}) => {
         },
     });
 
-    const onDeleteHandler = (elem) => {
+    const onDeleteHandler = (elem: TIngredient) => {
         dispatch({
-            type: DELETE_INGREDIENT,
+            type: ActionTypes.DELETE_INGREDIENT,
             item: elem,
         });
     } 
@@ -64,16 +75,11 @@ const ConstructorIngredient = ({elem, ind}) => {
             <ConstructorElement
                 handleClose={() => onDeleteHandler(elem)}
                 text={elem.name}
-                price={elem.price}
+                price={parseInt(elem.price, 10)}
                 thumbnail={elem.image}
             />
         </li>
     );
-}
-
-ConstructorIngredient.propTypes = {
-    elem: PropTypes.object,
-    ind: PropTypes.number
 }
 
 export default ConstructorIngredient;

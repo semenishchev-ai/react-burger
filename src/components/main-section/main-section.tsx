@@ -1,12 +1,15 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React, { FC, ReactElement } from "react";
 import BurgerIngredients from "../burger-ingregients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import styles from './main-section.module.css';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
-function MainSection({onModalOpen}) {
+interface IMainSectionProps {
+    onModalOpen: (header: string, content: ReactElement) => void;
+}
+
+const MainSection: FC<IMainSectionProps> = ({onModalOpen}) => {
     return (
         <DndProvider backend={HTML5Backend}>
             <main className={styles.section}>
@@ -15,10 +18,6 @@ function MainSection({onModalOpen}) {
             </main>
         </DndProvider>
     )
-}
-
-MainSection.propTypes = {
-    onModalOpen: PropTypes.func
 }
 
 export default MainSection;

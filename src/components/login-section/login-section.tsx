@@ -1,22 +1,22 @@
 import { Button, EmailInput, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./login-section.module.css"
-import React, { useCallback, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import React, { FormEvent, useCallback, useState } from "react";
+import { Link } from "react-router-dom";
 import { loginRequest } from "../../services/actions/auth-actions";
+import { useDispatch } from "../../hooks/useDispatch";
 
 function LoginSection() {
     const [form, setValue] = useState({ email: '', password: '' });
     const dispatch = useDispatch();
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
     const onSubmit = useCallback(
-        (e) => {
+        (e: FormEvent) => {
             e.preventDefault();
             dispatch(loginRequest(form));
-        }, [form]
+        }, [form, dispatch]
     )
 
     return (

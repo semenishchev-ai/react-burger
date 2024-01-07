@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useState } from "react";
 import styles from "./reset-password-section.module.css"
 import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,12 +8,12 @@ function ResetPasswordSection() {
     const [form, setValue] = useState({ password: '', code: '' });
     const navigate = useNavigate();
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
     const saveNewPassword = useCallback(
-        (e) => {
+        (e: FormEvent) => {
             e.preventDefault();
             resetPassword("/password-reset/reset", form.password, form.code)
             .then((ans) => {
