@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, ReactElement } from "react";
 
 export const useModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalChild, setModalChild] = useState(<></>);
   const [modalHeader, setModalHeader] = useState('');
 
-  const openModal = useCallback((header, content) => {
+  const openModal = useCallback((header: string, content: ReactElement) => {
     setIsModalOpen(true);
     setModalChild(content)
     setModalHeader(header)

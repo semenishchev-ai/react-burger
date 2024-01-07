@@ -1,8 +1,17 @@
 import { TUserData } from "../../utils/types";
 import ActionTypes from "../actions";
 
-const initState = {
-    user: {},
+type TAuthState = {
+    user: TUserData;
+    accessToken: string;
+    isAuthorized: boolean;
+}
+
+const initState: TAuthState = {
+    user: {
+        email: '',
+        password: '',
+    },
     accessToken: '',
     isAuthorized: false,
 };
@@ -14,7 +23,7 @@ export type TActionAuth = {
     },
 }
 
-export const authReducer = (state = initState,  action: TActionAuth) => {
+export const authReducer = (state: TAuthState = initState,  action: TActionAuth): TAuthState => {
     switch (action.type) {
         case ActionTypes.REGISTER_USER:
             return {
@@ -31,7 +40,10 @@ export const authReducer = (state = initState,  action: TActionAuth) => {
         case ActionTypes.LOGOUT_USER:
             return {
                 ...state,
-                user: {},
+                user: {
+                    email: '',
+                    password: '',
+                },
                 isAuthorized: false,
             };
         case ActionTypes.CHECK_TOKEN:

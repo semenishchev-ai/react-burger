@@ -1,16 +1,21 @@
 import { Button, CurrencyIcon, ConstructorElement } from "@ya.praktikum/react-developer-burger-ui-components";
-import React from "react";
-import PropTypes from 'prop-types';
+import React, { FC, ReactElement } from "react";
 import styles from './burger-constructor.module.css'
 import OrderDetails from "../order-details/order-details";
-import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import ActionTypes from "../../services/actions";
 import { postOrder } from "../../services/actions/actions";
 import ConstructorIngredient from "../constructor-ingredient/constructor-ingredient";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
+import { TIngredient } from "../../utils/types";
 
-function BurgerConstructor({onModalOpen}) {    
+interface IBurgerConstructorProps {
+    onModalOpen: (header: string, content: ReactElement) => void;
+}
+
+const BurgerConstructor: FC<IBurgerConstructorProps> = ({onModalOpen}) => {    
     const dispatch = useDispatch();
     const ingredientsConstructorList = useSelector(store => store.mainReducer.ingredientsConstructorList);
     const isAuthorized = useSelector(store => store.authReducer.isAuthorized);
@@ -25,7 +30,7 @@ function BurgerConstructor({onModalOpen}) {
         onModalOpen('', <OrderDetails />)
     }
 
-    const onDropHandler = (item) => {
+    const onDropHandler = (item: TIngredient) => {
         if (item.type === 'bun') {
             const bunElem = ingredientsConstructorList.find((elem) => elem.type === 'bun');
             if (bunElem) {
@@ -43,7 +48,7 @@ function BurgerConstructor({onModalOpen}) {
         });
     };
 
-    const [, dropTarget] = useDrop({
+    const [, dropTarget] = useDrop<TIngredient, void, unknown>({
         accept: 'constructorItem',
         drop(item) {
             onDropHandler(item);
@@ -63,7 +68,7 @@ function BurgerConstructor({onModalOpen}) {
                         type="top"
                         isLocked={true}
                         text={bunElem.name + " (верх)"}
-                        price={bunElem.price}
+                        price={parseInt(bunElem.price, 10)}
                         thumbnail={bunElem.image}
                     />
                 </div>)}
@@ -85,7 +90,7 @@ function BurgerConstructor({onModalOpen}) {
                         type="bottom"
                         isLocked={true}
                         text={bunElem.name + " (низ)"}
-                        price={bunElem.price}
+                        price={parseInt(bunElem.price, 10)}
                         thumbnail={bunElem.image}
                     />
                 </div>)}
@@ -103,10 +108,6 @@ function BurgerConstructor({onModalOpen}) {
             </div>
         </section>
     )
-}
-
-BurgerConstructor.propTypes = {
-    onModalOpen: PropTypes.func
 }
 
 export default BurgerConstructor;

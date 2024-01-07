@@ -1,9 +1,8 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
 import BurgerIngredient from "../burger-ingredient/burger-ingredient";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/useSelector";
 
 function BurgerIngredients() {
     const [current, setCurrent] = React.useState('one')
@@ -18,8 +17,12 @@ function BurgerIngredients() {
     const sauces = document.getElementById('two');
     const main = document.getElementById('three');
 
-    const onScrollListener = (event) => {
+    const onScrollListener = () => {
         if (scrollWindow) {
+            if (!buns || !sauces || !main) {
+                setCurrent("one");
+                return;
+            }
             const distBuns = Math.abs(scrollWindow.getBoundingClientRect().top - buns.getBoundingClientRect().top);
             const distSauces = Math.abs(scrollWindow.getBoundingClientRect().top - sauces.getBoundingClientRect().top);
             const distMain = Math.abs(scrollWindow.getBoundingClientRect().top - main.getBoundingClientRect().top);

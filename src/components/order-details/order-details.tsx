@@ -2,7 +2,7 @@ import React from "react";
 import styles from './order-details.module.css';
 
 import doneImagePath from '../../images/done.svg';
-import { useSelector } from "react-redux";
+import { useSelector } from "../../hooks/useSelector";
 
 function OrderDetails() {
     const orderNumber = useSelector(state => state.mainReducer.order);

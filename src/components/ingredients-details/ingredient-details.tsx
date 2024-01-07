@@ -1,8 +1,20 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from './ingredient-details.module.css';
-import PropTypes from 'prop-types';
+import { TIngredient } from "../../utils/types";
 
-function IngredientDetails({ingredient}) {
+interface IIngredientDetailsProps {
+    ingredient: TIngredient | {} | undefined;
+}
+
+const isTIngredient = (obj: TIngredient | {} | undefined): obj is TIngredient => {
+    return (obj as TIngredient).name !== undefined;
+};
+
+const IngredientDetails: FC<IIngredientDetailsProps> = ({ingredient}) => {
+
+    if (!isTIngredient(ingredient)) {
+        return null;
+    }
 
     return(
         <div className={styles.details}>
@@ -46,10 +58,6 @@ function IngredientDetails({ingredient}) {
             </ul>
         </div>
     )
-}
-
-IngredientDetails.propTypes = {
-    ingredient: PropTypes.object,
 }
 
 export default IngredientDetails;

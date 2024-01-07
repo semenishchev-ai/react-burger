@@ -1,22 +1,23 @@
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import React, { useEffect, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import React, { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import styles from "./profile-section.module.css"
-import { useDispatch, useSelector } from "react-redux";
 import { logoutRequest, patchUserInfo } from "../../services/actions/auth-actions";
+import { useDispatch } from "../../hooks/useDispatch";
+import { useSelector } from "../../hooks/useSelector";
+import { TUserData } from "../../utils/types";
 
 function ProfileSection() {
-    const [form, setValue] = useState({});
+    const [form, setValue] = useState<TUserData>({name: '', password: '', email: ''});
     const [isChanged, setChanged] = useState(false);
     const dispatch = useDispatch();
     const user = useSelector((store) => store.authReducer.user);
-    const navigate = useNavigate();
 
     useEffect(() => {
         setValue(user);
-      }, []);
+      }, [user]);
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
         setChanged(true);
     };
@@ -25,11 +26,11 @@ function ProfileSection() {
         dispatch(logoutRequest());
     }
 
-    const onCancel = (e) => {
+    const onCancel = (e: SyntheticEvent<Element, Event>) => {
         setValue(user);
     }
 
-    const onSubmit = (e) => {
+    const onSubmit = (e: FormEvent) => {
         e.preventDefault();
         if (isChanged) {
             dispatch(patchUserInfo(form));
@@ -45,7 +46,7 @@ function ProfileSection() {
                 <NavLink className={styles.inactive_link + " text text_type_main-medium"} to={{ pathname: '/profile' }}>
                     История заказов
                 </NavLink>
-                <a  className={styles.inactive_link + " text text_type_main-medium"} onClick={onExit}>
+                <a  className={styles.inactive_link + " text text_type_main-medium"} onClick={onExit} href='/'>
                     Выход
                 </a>
                 <p className={styles.text+ " text text_type_main-default"}>

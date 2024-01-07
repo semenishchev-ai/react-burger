@@ -20,12 +20,13 @@ export type TIngredient = {
     fat: number;
     carbohydrates: number;
     calories: number;
-    price: number;
+    price: string;
     image: string;
     image_mobile: string;
     image_large: string;
     counter?: number;
     currentId?: number;
+    ind?: number;
   }
 
   export type TActions = TActionAuth | TActionMain;

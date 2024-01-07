@@ -1,18 +1,22 @@
-import React from "react";
-import PropTypes from 'prop-types';
+import React, { FC } from "react";
 import { CurrencyIcon, Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from './burger-ingredient.module.css';
-import { useDispatch } from "react-redux";
 import ActionTypes from "../../services/actions";
 import { useDrag } from "react-dnd";
 import { useLocation, useNavigate } from "react-router-dom";
+import { TIngredient } from "../../utils/types";
+import { useDispatch } from "../../hooks/useDispatch";
 
-const BurgerIngredient = ({ingredient}) => {
+interface IBurgerIngredientProps {
+    ingredient: TIngredient;
+}
+
+const BurgerIngredient: FC<IBurgerIngredientProps> = ({ingredient}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [{isDrag}, dragRef] = useDrag({
+    const [, dragRef] = useDrag({
         type: 'constructorItem',
         item: ingredient,
         collect: monitor => ({
@@ -29,8 +33,7 @@ const BurgerIngredient = ({ingredient}) => {
     }
 
     return (
-        !isDrag &&
-        (<div ref={dragRef} className={styles.ingredient} onClick={onCLick}>
+        <div ref={dragRef} className={styles.ingredient} onClick={onCLick}>
             <img className={styles.image} src={ingredient.image} alt={ingredient.name}/>
             <div className={styles.price}>
                 <p className="text text_type_digits-default pr-2">
@@ -42,13 +45,9 @@ const BurgerIngredient = ({ingredient}) => {
                 {ingredient.name}
             </p>
             {ingredient.counter !== 0 && 
-            (<Counter count={ingredient.counter} size="default"/>)}
-        </div>)
+            (<Counter count={(ingredient.counter ? ingredient.counter : 0)} size="default"/>)}
+        </div>
     )
-}
-
-BurgerIngredient.propTypes = {
-    ingredient: PropTypes.object
 }
 
 export default BurgerIngredient;

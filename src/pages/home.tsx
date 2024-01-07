@@ -1,9 +1,8 @@
 import React from "react";
-import AppHeader from "../components/app-header/app-header";
 import MainSection from "../components/main-section/main-section";
 import Modal from "../components/modal/modal";
 import { useModal } from "../hooks/useModal";
-import { useSelector } from "react-redux";
+import { useSelector } from "../hooks/useSelector";
 
 function HomePage() {
     const dataFetched = useSelector(store =>  store.mainReducer.isFetched);

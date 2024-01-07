@@ -1,23 +1,23 @@
-import React, { useCallback, useState } from "react";
+import React, { FormEvent, useCallback, useState } from "react";
 import styles from "./register-section.module.css"
 import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { registrationRequest } from "../../services/actions/auth-actions";
+import { useDispatch } from "../../hooks/useDispatch";
 
 function RegisterSection() {
     const [form, setValue] = useState({ name: '', email: '', password: '' });
     const dispatch = useDispatch();
 
-    const onChange = (e) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue({ ...form, [e.target.name]: e.target.value });
     };
 
     const onSubmit = useCallback(
-        (e) => {
+        (e: FormEvent) => {
             e.preventDefault();
             dispatch(registrationRequest(form));
-        }, [form]
+        }, [form, dispatch]
     )
 
     return (

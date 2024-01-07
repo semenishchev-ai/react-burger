@@ -1,7 +1,15 @@
 import { TIngredient } from "../../utils/types";
 import ActionTypes from "../actions"
 
-const initialState = {
+type TMainState = {
+  fetchedIngredients: Array<TIngredient>;
+  ingredientsConstructorList: Array<TIngredient>;
+  currentIngredient: TIngredient | {};
+  order: number;
+  isFetched: boolean;
+}
+
+const initialState: TMainState = {
     fetchedIngredients: [],
     ingredientsConstructorList: [],
     currentIngredient: {},
@@ -21,7 +29,7 @@ export type TActionMain = {
 }
 
 
-export const mainReducer = (state = initialState, action: TActionMain) => {
+export const mainReducer = (state: TMainState = initialState, action: TActionMain): TMainState => {
     switch(action.type) {
         case ActionTypes.FETCH_INGREDIENTS:
           return {
@@ -30,7 +38,7 @@ export const mainReducer = (state = initialState, action: TActionMain) => {
               elem.counter = 0;
               return elem;
             }),
-            isFetched: action.isFetched,
+            isFetched: (action.isFetched ? true : false),
           };
         case ActionTypes.SET_INGREDIENT_DETAILS:
           return {
@@ -45,7 +53,7 @@ export const mainReducer = (state = initialState, action: TActionMain) => {
         case ActionTypes.SET_ORDER_NUMBER:
           return {
             ...state,
-            order: action.number,
+            order: (action.number ? action.number : 0),
           }
         case ActionTypes.ADD_INGREDIENT:
           return {

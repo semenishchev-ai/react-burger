@@ -6,7 +6,6 @@ import ForgotPasswordPage from '../../pages/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password';
 import ProfilePage from '../../pages/profile';
 import ProtectedRoute from '../protected-route/protected-route';
-import { useDispatch, useSelector } from 'react-redux';
 import IngredientPage from '../../pages/ingredient-page';
 import { fetchIngredients } from '../../services/actions/actions';
 import { useEffect } from 'react';
@@ -14,6 +13,8 @@ import Modal from '../modal/modal';
 import IngredientDetails from '../ingredients-details/ingredient-details';
 import ActionTypes from '../../services/actions';
 import AppHeader from '../app-header/app-header';
+import { useSelector } from '../../hooks/useSelector';
+import { useDispatch } from '../../hooks/useDispatch';
 
 function App () {
     const loggedIn = useSelector((store) => store.authReducer.isAuthorized);
