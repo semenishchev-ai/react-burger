@@ -3,7 +3,7 @@ import { TUserData } from "./types";
 
 const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res: any) => {
+const checkResponse = (res: Response) => {
     if (res.ok) {
         return res.json();
     } else {
@@ -16,7 +16,7 @@ const checkResponse = (res: any) => {
 };
 
 
-export const request = async (endpoint: string, options?: any) => {
+export const request = async (endpoint: string, options?: RequestInit) => {
     return fetch(BASE_URL + endpoint, options).then(checkResponse)
 }
 

@@ -59,7 +59,7 @@ export const mainReducer = (state: TMainState = initialState, action: TActionMai
           return {
             ...state,
             fetchedIngredients: [...state.fetchedIngredients].map(
-              (elem: TIngredient) => {
+              (elem) => {
                 return {
                   ...elem,
                   counter: (elem._id === action.item._id && 
